@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    env_file:
+      - ./gateway/.env
+    depends_on:
+      - tts
+      - stt
+      - chat
+      - doc
+      - quiz
+    networks:
+      - appnet
+
+  tts:
+    build: ./services/tts
+    environment:
+      - PORT=5001
+    networks:
+      - appnet
+
+  stt:
+    build: ./services/stt
+    environment:
+      - PORT=5002
+    networks:
+      - appnet
+
+  chat:
+    build: ./services/chat
+    environment:
+      - PORT=5003
+    networks:
+      - appnet
+
+  doc:
+    build: ./services/doc
+    environment:
+      - PORT=5004
+    networks:
+      - appnet
+
+  quiz:
+    build: ./services/quiz
+    environment:
+      - PORT=5005
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
